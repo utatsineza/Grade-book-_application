@@ -60,6 +60,7 @@ class Student:
         cursor.execute('INSERT INTO registrations (student_email, course_name, grade) VALUES (?, ?, ?)', 
                        (self.email, course.name, grade))
         conn.commit()
+        self.calculate_GPA()  # Recalculate GPA after registering for a course
 
 class Course:
     def __init__(self, name, trimester, credits):
@@ -110,12 +111,6 @@ class GradeBook:
             print(f"Registered {student.names} for {course.name} with grade {grade}.")
         else:
             print("Student or course not found.")
-
-    def calculate_GPA(self):
-        """Calculate the GPA for all students and display the results."""
-        for student in self.student_list:
-            student.calculate_GPA()
-            print(f"{student.names} ({student.email}): GPA = {student.GPA}")
 
     def calculate_ranking(self):
         """Sort the students by GPA in descending order and display the ranking."""
@@ -230,8 +225,9 @@ def main():
         for course_name, grade in cursor.fetchall():
             cursor.execute('SELECT * FROM courses WHERE name = ?', (course_name,))
             course_row = cursor.fetchone()
-            course = Course(course_row[0], course_row[1], course_row[2])
-            student.register_for_course(course, grade)
+            if course_row:
+                course = Course(course_row[0], course_row[1], course_row[2])
+                student.courses_registered.append((course, grade))
         grade_book.student_list.append(student)
 
     cursor.execute('SELECT * FROM courses')
@@ -239,9 +235,9 @@ def main():
         course = Course(row[0], row[1], row[2])
         grade_book.course_list.append(course)
 
-    print("\n------------------------------------------")
-    print("-------Welcome to Grade Book App -----------")
-    print("--------------------------------------------")
+    print("\n----------------------------------------------------")
+    print("------------- Welcome to Grade Book App ------------ ")
+    print("----------------------------------------------------")
 
     while True:
         print("\nGrade Book Menu:")
