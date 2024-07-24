@@ -235,9 +235,9 @@ def main():
         course = Course(row[0], row[1], row[2])
         grade_book.course_list.append(course)
 
-    print("\n----------------------------------------------------")
-    print("------------- Welcome to Grade Book App ------------ ")
-    print("----------------------------------------------------")
+    print("\n-----------------------------------------------------")
+    print("------------- Welcome to Grade Book App ------------- ")
+    print("-----------------------------------------------------")
 
     while True:
         print("\nGrade Book Menu:")
