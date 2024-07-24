@@ -126,7 +126,7 @@ class GradeBook:
         cursor.execute('SELECT * FROM students WHERE GPA BETWEEN ? AND ?', (min_grade, max_grade))
         filtered_students = cursor.fetchall()
         print("Students with GPA in the specified range:")
-        table = PrettyTable(["Email", "Names", "GPA"])
+        table = PrettyTable(["Email", "Names", "course Name", "Trimester", "grades", "GPA", "Ranking"])
         for student in filtered_students:
             table.add_row([student[0], student[1], student[2]])
         print(table)
